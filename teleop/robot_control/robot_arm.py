@@ -59,13 +59,13 @@ class DataBuffer:
             self.data = data
 
 class G1_29_ArmController:
-    def __init__(self, motion_mode = False, simulation_mode = False):
+    def __init__(self, motion_mode = False, simulation_mode = False, iface=None):
         logger_mp.info("Initialize G1_29_ArmController...")
         self.q_target = np.zeros(14)
         self.tauff_target = np.zeros(14)
         self.motion_mode = motion_mode
         self.simulation_mode = simulation_mode
-        self.kp_high = 300.0
+        self.kp_high = 100.0
         self.kd_high = 3.0
         self.kp_low = 80.0
         self.kd_low = 3.0
@@ -82,9 +82,15 @@ class G1_29_ArmController:
 
         # initialize lowcmd publisher and lowstate subscriber
         if self.simulation_mode:
-            ChannelFactoryInitialize(1)
+            if iface is not None:
+                ChannelFactoryInitialize(1, iface)
+            else:
+                ChannelFactoryInitialize(1)
         else:
-            ChannelFactoryInitialize(0)
+            if iface is not None:
+                ChannelFactoryInitialize(0, iface)
+            else:
+                ChannelFactoryInitialize(0)
 
         if self.motion_mode:
             self.lowcmd_publisher = ChannelPublisher(kTopicLowCommand_Motion, hg_LowCmd)
