@@ -420,8 +420,8 @@ def get_joint_positions(*, iface: str = "enx98fc84ec937b", timeout: float = 5.0)
 
 # -------------------------- Example CLI --------------------------
 if __name__ == "__main__":
-    #iface = sys.argv[1] if len(sys.argv) > 1 else "enx98fc84ec937b"
-    iface = "lo"
+    iface = sys.argv[1] if len(sys.argv) > 1 else "enx98fc84ec937b"
+    #iface = "lo"
     ctx = _context_from_iface(iface)
     print(f"[INFO] Using iface='{iface}' -> pub='{ctx['pub_topic']}', domain={ctx['domain']}")
 
